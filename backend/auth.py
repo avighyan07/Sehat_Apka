@@ -26,25 +26,12 @@ auth = Blueprint('auth', __name__)
 # 📥 Auto-download pneumonia model if not present
 
 
-def download_pneumonia_model():
-    model_path = "ml_models/avi_vgg19_model_01_new.keras"
-    if not os.path.exists(model_path):
-        print("Downloading pneumonia model...")
-        os.makedirs("ml_models", exist_ok=True)
-        
-        # Corrected Google Drive ID-based URL
-        file_id = "1JXe1StWlhLxhS-eLDPYCwrcrA4PsjksK"
-        gdown_url = f"https://drive.google.com/uc?id={file_id}"
-
-        gdown.download(gdown_url, model_path, quiet=False)
-    return model_path
-
 
 # 🔥 Load ML and DL models globally
 model_diabetes = joblib.load('ml_models/model4.joblib')
 model_heart = joblib.load('ml_models/model2.joblib')
 model_kidney = joblib.load('ml_models/model3.joblib')
-model_pneumonia = load_model(download_pneumonia_model())
+model_pneumonia = load_model('pneumonia_model.h5')
 model_breast_cancer = load_model('final_CNN.h5')
 
 
