@@ -25,9 +25,10 @@ auth = Blueprint('auth', __name__)
 
 # 📥 Auto-download pneumonia model if not present
 def download_pneumonia_model():
-    model_path = "avi_vgg19_model_01_new.keras"
+    model_path = "ml_models/avi_vgg19_model_01_new.keras"
     if not os.path.exists(model_path):
         print("Downloading pneumonia model...")
+        os.makedirs("ml_models", exist_ok=True)
         gdown.download("https://drive.google.com/uc?id=1H1Het2v75oeclElh8K8Oi4hVe5GPiqXU", model_path, quiet=False)
     return model_path
 
