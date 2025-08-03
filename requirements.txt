@@ -20,5 +20,4 @@ wtforms==3.1.2
 networkx==3.3
 sumy==0.11.0
 transformers==4.40.0
-gdown
-
+gdown==5.1.0
