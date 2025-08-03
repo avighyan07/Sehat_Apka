@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Kidney Disease Prediction{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-4">Kidney Disease Prediction</h1>
+    {% if prediction %}
+    <div class="alert alert-info text-center mt-4" style="font-size: 1.1rem;">
+        {{ prediction }}
+    </div>
+    {% endif %}
+
+    <form action="/kidney" method="POST">
+        {% for field, label, placeholder, min, max, step in [
+            ('age', 'Age', '0-120', 0, 120, None),
+            ('blood_pressure', 'Blood Pressure (mmHg)', '0-200', 0, 200, None),
+            ('specific_gravity', 'Specific Gravity', '1.005-1.025', 1.005, 1.025, 0.001),
+            ('albumin', 'Albumin', '0-5', 0, 5, None),
+            ('sugar', 'Sugar', '0-5', 0, 5, None),
+            ('red_blood_cells', 'Red Blood Cells (0 = normal, 1 = abnormal)', '0-1', 0, 1, None),
+            ('pus_cell', 'Pus Cell (0 = normal, 1 = abnormal)', '0-1', 0, 1, None),
+            ('pus_cell_clumps', 'Pus Cell Clumps (0 = not present, 1 = present)', '0-1', 0, 1, None),
+            ('bacteria', 'Bacteria (0 = not present, 1 = present)', '0-1', 0, 1, None),
+            ('blood_glucose_random', 'Blood Glucose Random (mg/dL)', '0-500', 0, 500, None),
+            ('blood_urea', 'Blood Urea (mg/dL)', '0-200', 0, 200, None),
+            ('serum_creatinine', 'Serum Creatinine (mg/dL)', '0-15', 0, 15, None),
+            ('sodium', 'Sodium (mEq/L)', '120-160', 120, 160, None),
+            ('potassium', 'Potassium (mEq/L)', '2.5-7.0', 2.5, 7.0, 0.1),
+            ('haemoglobin', 'Haemoglobin (g/dL)', '3.1-17.8', 3.1, 17.8, 0.1),
+            ('packed_cell_volume', 'Packed Cell Volume (%)', '20-60', 20, 60, 1),
+            ('white_blood_cell_count', 'WBC Count (cells/cmm)', '2000-17000', 2000, 17000, None),
+            ('red_blood_cell_count', 'RBC Count (million/cmm)', '2.1-6.9', 2.1, 6.9, 0.1),
+            ('hypertension', 'Hypertension (0 = no, 1 = yes)', '0-1', 0, 1, None),
+            ('diabetes_mellitus', 'Diabetes Mellitus (0 = no, 1 = yes)', '0-1', 0, 1, None),
+            ('coronary_artery_disease', 'Coronary Artery Disease (0 = no, 1 = yes)', '0-1', 0, 1, None),
+            ('appetite', 'Appetite (0 = poor, 1 = good)', '0-1', 0, 1, None),
+            ('peda_edema', 'Pedal Edema (0 = no, 1 = yes)', '0-1', 0, 1, None),
+            ('aanemia', 'Anemia (0 = no, 1 = yes)', '0-1', 0, 1, None),
+        ] %}
+        <div class="form-group">
+            <label for="{{ field }}">{{ label }}</label>
+            <input type="number" name="{{ field }}" id="{{ field }}" class="form-control" required placeholder="{{ placeholder }}"
+                min="{{ min }}" max="{{ max }}"
+                {% if step %} step="{{ step }}"{% endif %}>
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary mt-3">Predict</button>
+    </form>
+</div>
+{% endblock %}

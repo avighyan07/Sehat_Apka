@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Medical Image{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="background-color: black; color: white; padding: 20px; border-radius: 10px;">
+  <h2>Upload Medical Image</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="image">Choose an image</label>
+      <input type="file" class="form-control" id="image" name="image">
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+
+  <div class="row mt-4">
+    {% for record in user.records %}
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <img src="{{ url_for('static', filename=record.image_path) }}" class="card-img-top" alt="Medical Image">
+        <div class="card-body">
+          <p class="card-text">Uploaded image</p>
+          <form method="POST" action="{{ url_for('auth.delete_image', image_id=record.id) }}">
+            <button type="submit" class="btn btn-danger">Delete Image</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

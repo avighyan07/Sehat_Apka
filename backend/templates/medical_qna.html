@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Medical Q&A{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Medical Q&A Chatbot</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="question">Ask your medical question:</label>
+            <input type="text" class="form-control" id="question" name="question" placeholder="Enter your question here" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ask</button>
+    </form>
+
+    {% if answer %}
+        <div class="mt-4">
+            <h4>Answer:</h4>
+            <p>{{ answer }}</p>
+            <p><strong>Similarity Score:</strong> {{ similarity | round(2) }}</p>
+        </div>
+    {% endif %}
+
+    
+</div>
+{% endblock %}

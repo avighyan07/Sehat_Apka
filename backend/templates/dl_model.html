@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DL Model Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+
+        .disease-container {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .disease-option {
+            background-color: #1f1f1f;
+            border-radius: 10px;
+            padding: 20px;
+            width: 30%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .disease-option:hover {
+            transform: scale(1.05);
+        }
+
+        .disease-option img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .disease-option a {
+            text-decoration: none;
+            color: #1e90ff;
+            font-size: 18px;
+            display: block;
+            margin-top: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .disease-option a:hover {
+            color: #1c7ed6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Select The Disease Predictor Model</h1>
+    <div class="disease-container">
+        <div class="disease-option">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCX1VYTAM71XIgIoQ8ovFY-9Hr6bGFIkaFfQ&s" alt="Diabetes Prediction">
+            <a href="/pneumonia">Pneumonia Prediction</a>
+        </div>
+       
+        <div class="disease-option">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU7bIvjxSCbLUOBhLBxMesd6imR2pNE2IaRw&s"alt="Diabetes Prediction">
+            <a href="/breast_cancer">Breast Cancer Prediction</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: red;
+    
+   
+   background-color: #1f1f1f;
+   background-repeat: no-repeat;
+   background-size:1550px 800px;  /* This will make the image cover the container */
+ 
+    
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    background-color: black;
+    padding: 15px 25px;
+    color: blue;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+header .nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
+    margin-left: 30px;
+}
+
+header .nav-links li {
+    margin: 0 20px;
+}
+
+header .nav-links a {
+    color: blue;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+header .nav-links a:hover {
+    color: #1c7ed6;
+}
+
+header .login-btn {
+    background-color: black;
+    color: #1e90ff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header .login-btn:hover {
+    background-color: red;
+    color: #1c7ed6;
+}
+
+.hero {
+    
+    background-size: cover;
+    background-color: #1f1f1f;
+    background-position: center;
+    color: black;
+    text-align: center;
+    padding: 120px 20px;
+    background-blend-mode: multiply;
+}
+
+.hero-content h1 {
+    font-size: 50px;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+.hero-content p {
+    font-size: 22px;
+    margin-bottom: 35px;
+}
+
+.cta-btn {
+    background-color: #1e90ff;
+    color: #ffffff;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-btn:hover {
+    background-color: #1c7ed6;
+}
+
+.about-section, .features-section {
+    padding: 60px 30px;
+    text-align: center;
+    background-color: #1f1f1f;
+}
+
+.about-section h2, .features-section h2 {
+    font-size: 38px;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+.features-section .feature {
+    margin: 30px 0;
+}
+
+.features-section .feature h3 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    color: #f0f0f0;
+}
+
+footer {
+    background-color: black;
+    color: #ffffff;
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+}
+
+footer .contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: text-decoration 0.3s ease;
+}
+
+footer .contact-link:hover {
+    text-decoration: underline;
+}

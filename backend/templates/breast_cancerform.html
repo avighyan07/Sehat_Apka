@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Breast Cancer Detection{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">Breast Cancer Detection</h1>
+    <form method="POST" enctype="multipart/form-data" style="text-align: center;">
+        <label for="xray_image">Upload  X-ray Image:</label><br><br>
+        <input type="file" name="xray_image" accept="image/*" required><br><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if result %}
+    <div class="prediction" style="margin-top: 30px; padding: 20px; background-color: #1e1e1e; border: 1px solid #444; border-radius: 8px;">
+        <h2>The model predicts:</h2>
+        {% if '⚠️' in result %}
+            <h2 style="color: red;">{{ result }}</h2>
+        {% else %}
+            <h2 style="color: #4CAF50;">{{ result }}</h2>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}

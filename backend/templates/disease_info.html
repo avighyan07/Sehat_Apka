@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4 text-center text-light">Select a Disease</h2>
+
+  <form method="POST" action="/disease_info">
+    <div class="form-group">
+      <select class="form-control bg-dark text-light border-secondary" name="disease" onchange="this.form.submit()">
+        <option value="">-- Choose Disease --</option>
+        {% for disease in diseases %}
+          <option value="{{ disease }}" {% if selected == disease %}selected{% endif %}>{{ disease.replace('_', ' ')|capitalize }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+
+  {% if selected %}
+    <div class="card mt-4 bg-dark text-white border-secondary">
+      <div class="card-body">
+        <h4 class="card-title text-info text-capitalize">
+          🦠 Information for {{ selected.replace('_', ' ') }}
+        </h4>
+
+        {% if selected == 'diabetes' %}
+          <p class="text-muted">Diabetes is a chronic condition that affects how your body turns food into energy.</p>
+
+          <h5>🔍 Causes</h5>
+          <ul><li>Genetics</li><li>Obesity</li><li>Physical inactivity</li></ul>
+
+          <h5>🧬 Symptoms</h5>
+          <div>
+            <span class="badge badge-info m-1">Increased thirst</span>
+            <span class="badge badge-info m-1">Frequent urination</span>
+            <span class="badge badge-info m-1">Extreme hunger</span>
+            <span class="badge badge-info m-1">Fatigue</span>
+            <span class="badge badge-info m-1">Blurred vision</span>
+          </div>
+
+          <h5 class="mt-3">⚠️ Complications</h5>
+          <ul><li>Kidney damage</li><li>Heart disease</li><li>Vision loss</li></ul>
+
+          <h5 class="mt-3">🛡️ Precautions</h5>
+          <ul><li>Regular blood sugar checks</li><li>Healthy diet</li><li>Exercise</li><li>Medication compliance</li></ul>
+
+          <h5>🏃 Lifestyle</h5>
+          <ul><li>Low-carb meals</li><li>Walking or light workouts</li></ul>
+
+          <h5>🧪 Recommended Tests</h5>
+          <ul><li>Fasting blood sugar</li><li>HbA1c</li><li>Oral glucose tolerance</li></ul>
+
+          <h5>💊 Medicines</h5>
+          <ul><li>Metformin</li><li>Insulin</li><li>Sulfonylureas</li></ul>
+
+          <h5>👨‍⚕️ When to See a Doctor</h5>
+          <ul><li>Vision problems</li><li>High glucose readings</li><li>Fatigue with no cause</li></ul>
+
+        {% elif selected == 'heart' %}
+          <p class="text-muted">Heart disease involves narrowed or blocked blood vessels that can lead to heart attacks.</p>
+
+          <h5>🔍 Causes</h5>
+          <ul><li>High blood pressure</li><li>Smoking</li><li>Cholesterol buildup</li></ul>
+
+          <h5>❤️ Symptoms</h5>
+          <div>
+            <span class="badge badge-danger m-1">Chest pain</span>
+            <span class="badge badge-danger m-1">Shortness of breath</span>
+            <span class="badge badge-danger m-1">Fatigue</span>
+            <span class="badge badge-danger m-1">Irregular heartbeat</span>
+          </div>
+
+          <h5 class="mt-3">⚠️ Complications</h5>
+          <ul><li>Heart failure</li><li>Stroke</li><li>Cardiac arrest</li></ul>
+
+          <h5>🛡️ Precautions</h5>
+          <ul><li>Regular exercise</li><li>Low-sodium diet</li><li>Cholesterol checks</li><li>Blood pressure control</li></ul>
+
+          <h5>🏃 Lifestyle</h5>
+          <ul><li>Walking 30 mins daily</li><li>Stress management</li></ul>
+
+          <h5>🧪 Recommended Tests</h5>
+          <ul><li>ECG</li><li>Stress test</li><li>Angiography</li></ul>
+
+          <h5>💊 Medicines</h5>
+          <ul><li>Aspirin</li><li>Beta-blockers</li><li>ACE inhibitors</li></ul>
+
+          <h5>👨‍⚕️ When to See a Doctor</h5>
+          <ul><li>Chest pain</li><li>Shortness of breath</li><li>Irregular pulse</li></ul>
+
+        {% elif selected == 'kidney' %}
+          <p class="text-muted">Kidney disease involves damage that causes kidneys to filter blood improperly over time.</p>
+
+          <h5>🔍 Causes</h5>
+          <ul><li>Diabetes</li><li>High blood pressure</li><li>Infections</li></ul>
+
+          <h5>🧬 Symptoms</h5>
+          <div>
+            <span class="badge badge-warning m-1">Swelling in feet</span>
+            <span class="badge badge-warning m-1">Fatigue</span>
+            <span class="badge badge-warning m-1">Trouble sleeping</span>
+            <span class="badge badge-warning m-1">Frequent urination</span>
+          </div>
+
+          <h5 class="mt-3">⚠️ Complications</h5>
+          <ul><li>Fluid buildup</li><li>Heart disease</li><li>Kidney failure</li></ul>
+
+          <h5>🛡️ Precautions</h5>
+          <ul><li>Limit salt intake</li><li>Stay hydrated</li><li>Monitor blood pressure</li></ul>
+
+          <h5>🏃 Lifestyle</h5>
+          <ul><li>Low-sodium foods</li><li>Hydration</li></ul>
+
+          <h5>🧪 Recommended Tests</h5>
+          <ul><li>Urine test</li><li>Creatinine test</li><li>GFR test</li></ul>
+
+          <h5>💊 Medicines</h5>
+          <ul><li>Diuretics</li><li>ACE inhibitors</li><li>Calcium channel blockers</li></ul>
+
+          <h5>👨‍⚕️ When to See a Doctor</h5>
+          <ul><li>Swelling in legs</li><li>Fatigue</li><li>Dark urine</li></ul>
+
+        {% elif selected == 'pneumonia' %}
+          <p class="text-muted">Pneumonia is an infection that inflames air sacs in the lungs, causing cough and difficulty breathing.</p>
+
+          <h5>🔍 Causes</h5>
+          <ul><li>Bacteria</li><li>Viruses</li><li>Fungi</li></ul>
+
+          <h5>🧬 Symptoms</h5>
+          <div>
+            <span class="badge badge-secondary m-1">Cough with phlegm</span>
+            <span class="badge badge-secondary m-1">Fever</span>
+            <span class="badge badge-secondary m-1">Shortness of breath</span>
+            <span class="badge badge-secondary m-1">Chest pain</span>
+          </div>
+
+          <h5 class="mt-3">⚠️ Complications</h5>
+          <ul><li>Sepsis</li><li>Respiratory failure</li><li>Pleural effusion</li></ul>
+
+          <h5>🛡️ Precautions</h5>
+          <ul><li>Vaccination</li><li>Hand hygiene</li><li>Avoid smoking</li></ul>
+
+          <h5>🏃 Lifestyle</h5>
+          <ul><li>Avoid cold exposure</li><li>Stay indoors if infected</li></ul>
+
+          <h5>🧪 Recommended Tests</h5>
+          <ul><li>Chest X-ray</li><li>Blood culture</li><li>Sputum test</li></ul>
+
+          <h5>💊 Medicines</h5>
+          <ul><li>Antibiotics</li><li>Fever reducers</li><li>Cough suppressants</li></ul>
+
+          <h5>👨‍⚕️ When to See a Doctor</h5>
+          <ul><li>High fever</li><li>Breathing difficulty</li><li>Persistent cough</li></ul>
+
+        {% elif selected == 'breast_cancer' %}
+          <p class="text-muted">Breast cancer forms in breast cells and can spread if untreated. Early detection is critical.</p>
+
+          <h5>🔍 Causes</h5>
+          <ul><li>Genetics (BRCA genes)</li><li>Hormonal imbalance</li><li>Age</li></ul>
+
+          <h5>🎗️ Symptoms</h5>
+          <div>
+            <span class="badge badge-light m-1">Lump in breast</span>
+            <span class="badge badge-light m-1">Change in shape</span>
+            <span class="badge badge-light m-1">Nipple discharge</span>
+          </div>
+
+          <h5 class="mt-3">⚠️ Complications</h5>
+          <ul><li>Metastasis</li><li>Organ failure</li><li>Recurrence</li></ul>
+
+          <h5>🛡️ Precautions</h5>
+          <ul><li>Regular mammograms</li><li>Self-exams</li><li>Healthy lifestyle</li></ul>
+
+          <h5>🏃 Lifestyle</h5>
+          <ul><li>Low-fat diet</li><li>Regular checkups</li></ul>
+
+          <h5>🧪 Recommended Tests</h5>
+          <ul><li>Mammogram</li><li>Biopsy</li><li>Ultrasound</li></ul>
+
+          <h5>💊 Medicines</h5>
+          <ul><li>Hormonal therapy</li><li>Chemotherapy</li><li>Targeted drugs</li></ul>
+
+          <h5>👨‍⚕️ When to See a Doctor</h5>
+          <ul><li>New lump</li><li>Discharge</li><li>Family history of cancer</li></ul>
+
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <div class="text-center mt-4 text-muted">
+      <em>Please select a disease to see relevant medical information.</em>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

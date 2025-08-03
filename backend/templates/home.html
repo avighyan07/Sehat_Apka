@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="jumbotron text-center" style="background-color: black">
+    <h1 style="color: #3498db;">Welcome to Sehat Buddy</h1>
+    <p class="lead">Your one-stop solution for medical predictions and analysis.</p>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-md-4">
+      <div class="card" style="background-color: black">
+        <div class="card-body">
+          <h5 class="card-title" style="color: #3498db;">Health Risk Assessment</h5>
+          <p class="card-text">
+            Provide your medical details for Diagnosis
+          </p>
+          <a href="/mlpred" class="btn btn-primary">Try Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card" style="background-color: black">
+        <div class="card-body">
+          <h5 class="card-title" style="color: #3498db;">Smart Medical Image Insights</h5>
+          <p class="card-text">
+            Upload your medical images for Diagnosis
+          </p>
+          <a href="/dlpred" class="btn btn-primary">Upload Image</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card" style="background-color: black">
+        <div class="card-body">
+          <h5 class="card-title" style="color: #3498db;">Contact Us</h5>
+          <p class="card-text">
+            <p> Connect With Avighyan On  
+            <a href="https://www.linkedin.com/in/avighyan-chakraborty-823506370/" target="_blank">LinkedIn</a>
+            </p>
+            <p> Connect With Avighyan On  
+              <a href="mailto:avighyanchakraborty@gmail.com">
+                <i class="fa fa-envelope"></i> Gmail
+              </a>
+            </p>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Section for Uploading Medical Images -->
+  <div class="row text-center mt-5">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body" style="background-color: black">
+          <h5 class="card-title" style="color: #3498db;">Your Medical Sathi</h5>
+          <p class="card-text">
+            Ask questions related to health, symptoms, and diseases. Get reliable answers instantly.
+          </p>
+          <a href="/medical_qna" class="btn btn-primary">Ask Here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
