@@ -24,13 +24,21 @@ import gdown
 auth = Blueprint('auth', __name__)
 
 # 📥 Auto-download pneumonia model if not present
+
+
 def download_pneumonia_model():
     model_path = "ml_models/avi_vgg19_model_01_new.keras"
     if not os.path.exists(model_path):
         print("Downloading pneumonia model...")
         os.makedirs("ml_models", exist_ok=True)
-        gdown.download("https://drive.google.com/file/d/1JXe1StWlhLxhS-eLDPYCwrcrA4PsjksK/view?usp=sharing", model_path, quiet=False)
+        
+        # Corrected Google Drive ID-based URL
+        file_id = "1JXe1StWlhLxhS-eLDPYCwrcrA4PsjksK"
+        gdown_url = f"https://drive.google.com/uc?id={file_id}"
+
+        gdown.download(gdown_url, model_path, quiet=False)
     return model_path
+
 
 # 🔥 Load ML and DL models globally
 model_diabetes = joblib.load('ml_models/model4.joblib')
