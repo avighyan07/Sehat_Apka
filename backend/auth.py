@@ -38,48 +38,51 @@ model_breast_cancer = load_model('final_CNN.h5')
 # 🔥 Load HuggingFace pipeline
 simplifier = pipeline("text2text-generation", model="google/flan-t5-small")
 
-# 🔥 Load MedQuAD dataset
+# 📁 Load MedQuAD Dataset
 def load_medquad_all(base_path):
     data = []
-    folders = [f for f in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, f))]
-    for folder in folders:
+    for folder in os.listdir(base_path):
         folder_path = os.path.join(base_path, folder)
-        files = [f for f in os.listdir(folder_path) if f.endswith('.xml')]
-        for file in files:
-            tree = ET.parse(os.path.join(folder_path, file))
-            root = tree.getroot()
-            for qa in root.findall('.//QAPair'):
-                q_elem, a_elem = qa.find('Question'), qa.find('Answer')
-                q = q_elem.text.strip() if q_elem is not None and q_elem.text else ""
-                a = a_elem.text.strip() if a_elem is not None and a_elem.text else ""
-                if q and a:
-                    data.append({"question": q, "answer": a})
+        if not os.path.isdir(folder_path):
+            continue
+        for file in os.listdir(folder_path):
+            if file.endswith('.xml'):
+                tree = ET.parse(os.path.join(folder_path, file))
+                root = tree.getroot()
+                for qa in root.findall('.//QAPair'):
+                    q_elem = qa.find('Question')
+                    a_elem = qa.find('Answer')
+                    q = q_elem.text.strip() if q_elem is not None and q_elem.text else ""
+                    a = a_elem.text.strip() if a_elem is not None and a_elem.text else ""
+                    if q and a:
+                        data.append({"question": q, "answer": a})
     return pd.DataFrame(data)
 
-df_medquad = load_medquad_all(r"C:\Users\Arunava Chakraborty\Desktop\ChatBots\Medical Q&A Chatbot\data\MedQuAD")
+# ⚠️ Set your MedQuAD path properly before deployment
+df_medquad = load_medquad_all("data/MedQuAD")  # Use relative path for Render/Heroku
 
-# 🔎 NER
+# 🧠 Named Entity Recognition (Nouns only)
 def named_entity_recognition(text):
     tokens = word_tokenize(text)
     tags = pos_tag(tokens)
     return [word for word, tag in tags if tag.startswith('NN')]
 
-# 🔎 Answer retrieval
-def retrieve_answer(user_q, questions, answers):
+# 🔍 Answer Retrieval using TF-IDF + Cosine Similarity
+def retrieve_answer(user_q, questions, answers, threshold=0.2):
     vectorizer = TfidfVectorizer().fit([user_q] + questions)
     vectors = vectorizer.transform([user_q] + questions)
     cosine_sim = cosine_similarity(vectors[0:1], vectors[1:]).flatten()
     max_idx = cosine_sim.argmax()
     max_sim = cosine_sim[max_idx]
-    return (answers[max_idx], max_sim) if max_sim > 0.2 else ("No relevant answer found.", max_sim)
+    return (answers[max_idx], max_sim) if max_sim > threshold else ("No relevant answer found.", max_sim)
 
-# 💡 Simplifier
+# 💡 Medical Term Simplifier
 def explain_medical_term(term):
     prompt = f"Explain {term} in simple terms for a patient. Avoid complex medical jargon. Keep it clear and short."
     try:
         result = simplifier(prompt, max_length=64, min_length=20, do_sample=False)
         return result[0]['generated_text']
-    except Exception:
+    except Exception as e:
         return "No explanation available due to model error."
 
 # 📁 Routes
