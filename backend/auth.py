@@ -45,7 +45,7 @@ model_diabetes = joblib.load('ml_models/model4.joblib')
 model_heart = joblib.load('ml_models/model2.joblib')
 model_kidney = joblib.load('ml_models/model3.joblib')
 model_pneumonia = load_model(download_pneumonia_model())
-model_breast_cancer = load_model(r'cleaned_repo\final_CNN.h5')
+model_breast_cancer = load_model('final_CNN.h5')
 
 
 # 🔥 Load HuggingFace pipeline
