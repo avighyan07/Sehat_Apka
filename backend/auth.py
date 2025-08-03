@@ -19,14 +19,25 @@ tf.get_logger().setLevel('ERROR')
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
+import gdown
+
 auth = Blueprint('auth', __name__)
+
+# 📥 Auto-download pneumonia model if not present
+def download_pneumonia_model():
+    model_path = "avi_vgg19_model_01_new.keras"
+    if not os.path.exists(model_path):
+        print("Downloading pneumonia model...")
+        gdown.download("https://drive.google.com/uc?id=1H1Het2v75oeclElh8K8Oi4hVe5GPiqXU", model_path, quiet=False)
+    return model_path
 
 # 🔥 Load ML and DL models globally
 model_diabetes = joblib.load('ml_models/model4.joblib')
 model_heart = joblib.load('ml_models/model2.joblib')
 model_kidney = joblib.load('ml_models/model3.joblib')
-model_pneumonia = load_model(r'C:\Users\Arunava Chakraborty\Desktop\HUMAN_DISEASE_PREDICTION\avi_vgg19_model_01_new.keras')
-model_breast_cancer = load_model(r'C:\Users\Arunava Chakraborty\Desktop\HUMAN_DISEASE_PREDICTION\final_CNN.h5')
+model_pneumonia = load_model(download_pneumonia_model())
+model_breast_cancer = load_model(r'cleaned_repo\final_CNN.h5')
+
 
 # 🔥 Load HuggingFace pipeline
 simplifier = pipeline("text2text-generation", model="google/flan-t5-small")
