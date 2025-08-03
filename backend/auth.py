@@ -29,7 +29,7 @@ def download_pneumonia_model():
     if not os.path.exists(model_path):
         print("Downloading pneumonia model...")
         os.makedirs("ml_models", exist_ok=True)
-        gdown.download("https://drive.google.com/uc?id=1H1Het2v75oeclElh8K8Oi4hVe5GPiqXU", model_path, quiet=False)
+        gdown.download("https://drive.google.com/file/d/1JXe1StWlhLxhS-eLDPYCwrcrA4PsjksK/view?usp=sharing", model_path, quiet=False)
     return model_path
 
 # 🔥 Load ML and DL models globally
