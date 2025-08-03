@@ -1,10 +1,1 @@
-## 🔗 Download Pretrained Model
 
-Due to GitHub's file size limit (100 MB), the trained model is not included in this repository.
-
-You can download it manually from the link below:
-
-👉 [Download avi_vgg19_model_01_new.keras](https://drive.google.com/file/d/1H1Het2v75oeclElh8K8Oi4hVe5GPiqXU/view?usp=drive_link)
-
-After downloading, place the file in the following directory inside the project:
-avi_vgg19_model_01_new.keras
