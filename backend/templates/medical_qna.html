@@ -17,10 +17,21 @@
         <div class="mt-4">
             <h4>Answer:</h4>
             <p>{{ answer }}</p>
-            <p><strong>Similarity Score:</strong> {{ similarity | round(2) }}</p>
+            {% if similarity %}
+                <p><strong>Similarity Score:</strong> {{ similarity | round(2) }}</p>
+            {% endif %}
         </div>
     {% endif %}
 
-    
+    {% if explanations %}
+        <div class="mt-4">
+            <h4>Medical Term Explanations:</h4>
+            <ul>
+                {% for term, explanation in explanations.items() %}
+                    <li><strong>{{ term }}</strong>: {{ explanation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
