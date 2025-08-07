@@ -36,9 +36,10 @@ from keras.models import load_model
 model_pneumonia = None  # global cache
 model_breast_cancer = None
 
+def get_penumonia_model():
     global model_pneumonia
     if model_pneumonia is None:
-        model_pneumonia = load_model("pneumonia_model.h5")
+        model_pneumonia = load_model("model.h5")
     return model_pneumonia
 
 def get_breast_cancer_model():
@@ -189,7 +190,8 @@ def pneumonia():
             if img is None:
                 flash('Invalid image.', category='error')
                 return redirect(url_for('auth.pneumonia'))
-
+            model = get_penumonia_model()
+            prediction = model.predict(img_resized)
             img_rgb = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
             img_resized = cv2.resize(img_rgb, (150, 150)) / 255.0
             img_resized = np.reshape(img_resized, (1, 150, 150, 3))
@@ -215,8 +217,8 @@ def breast_cancer():
             
             img_resized = cv2.resize(img_rgb, (50, 50)) / 255.0
             img_resized = np.reshape(img_resized, (1, 50, 50, 3))  # Match model input shape
-
-            prediction = model_breast_cancer.predict(img_resized)
+            model = get_breast_cancer_model()
+            prediction = model.predict(img_resized)
             predicted_class = 1 if prediction[0][0] > 0.5 else 0
             result = '⚠️ Based on the analysis, there are indications of potential breast cancer. Please consult a medical professional for a detailed evaluation.' if predicted_class == 1 else '✅ Based on the analysis, no signs of breast cancer were detected. Maintain regular health check-ups to stay updated.'
     return render_template('breast_cancerform.html', result=result)
