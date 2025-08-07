@@ -12,7 +12,7 @@ from nltk import word_tokenize, pos_tag
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from transformers import pipeline
-
+import re
 # ⚠️ Suppress TensorFlow and warnings for clean console
 import tensorflow as tf
 tf.get_logger().setLevel('ERROR')
