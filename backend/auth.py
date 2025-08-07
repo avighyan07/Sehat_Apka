@@ -31,12 +31,27 @@ import google.generativeai as genai
 genai.configure(api_key="AIzaSyAd7wKJiROhKdP1D6AZvL5vTmmkGGUumPE")
 gemini_model = genai.GenerativeModel('gemini-1.5-flash')
 
+
+from keras.models import load_model
+model_pneumonia = None  # global cache
+model_breast_cancer = None
+
+    global model_pneumonia
+    if model_pneumonia is None:
+        model_pneumonia = load_model("pneumonia_model.h5")
+    return model_pneumonia
+
+def get_breast_cancer_model():
+    global model_breast_cancer
+    if model_breast_cancer is None:
+        model_breast_cancer = load_model('final_CNN.h5')
+    return model_breast_cancer
 # 🔥 Load ML and DL models globally
 model_diabetes = joblib.load('ml_models/model4.joblib')
 model_heart = joblib.load('ml_models/model2.joblib')
 model_kidney = joblib.load('ml_models/model3.joblib')
-model_pneumonia = load_model('pneumonia_model.h5')
-model_breast_cancer = load_model('final_CNN.h5')
+# # model_pneumonia = load_model('pneumonia_model.h5')
+# model_breast_cancer = load_model('final_CNN.h5')
 
 
 # 🔥 Load HuggingFace pipeline
@@ -176,8 +191,8 @@ def pneumonia():
                 return redirect(url_for('auth.pneumonia'))
 
             img_rgb = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
-            img_resized = cv2.resize(img_rgb, (128, 128)) / 255.0
-            img_resized = np.reshape(img_resized, (1, 128, 128, 3))
+            img_resized = cv2.resize(img_rgb, (150, 150)) / 255.0
+            img_resized = np.reshape(img_resized, (1, 150, 150, 3))
             prediction = model_pneumonia.predict(img_resized)
             predicted_class = np.argmax(prediction, axis=1)[0]
             result = '⚠️ Based on the analysis, there are indications of potential pneumonia. Please consult a medical professional for a detailed evaluation.' if predicted_class == 1 else '✅ Based on the analysis, no signs of pneumonia were detected. Maintain regular health check-ups to stay updated.'
