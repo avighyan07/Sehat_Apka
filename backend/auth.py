@@ -19,13 +19,17 @@ tf.get_logger().setLevel('ERROR')
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-import gdown
+
 
 auth = Blueprint('auth', __name__)
 
 # 📥 Auto-download pneumonia model if not present
 
 
+import google.generativeai as genai
+# --- Load your Gemini API key ---
+genai.configure(api_key="AIzaSyAd7wKJiROhKdP1D6AZvL5vTmmkGGUumPE")
+gemini_model = genai.GenerativeModel('gemini-1.5-flash')
 
 # 🔥 Load ML and DL models globally
 model_diabetes = joblib.load('ml_models/model4.joblib')
@@ -36,54 +40,39 @@ model_breast_cancer = load_model('final_CNN.h5')
 
 
 # 🔥 Load HuggingFace pipeline
-simplifier = pipeline("text2text-generation", model="google/flan-t5-small")
+# simplifier = pipeline("text2text-generation", model="google/flan-t5-small")
 
-# 📁 Load MedQuAD Dataset
-def load_medquad_all(base_path):
-    data = []
-    for folder in os.listdir(base_path):
-        folder_path = os.path.join(base_path, folder)
-        if not os.path.isdir(folder_path):
-            continue
-        for file in os.listdir(folder_path):
-            if file.endswith('.xml'):
-                tree = ET.parse(os.path.join(folder_path, file))
-                root = tree.getroot()
-                for qa in root.findall('.//QAPair'):
-                    q_elem = qa.find('Question')
-                    a_elem = qa.find('Answer')
-                    q = q_elem.text.strip() if q_elem is not None and q_elem.text else ""
-                    a = a_elem.text.strip() if a_elem is not None and a_elem.text else ""
-                    if q and a:
-                        data.append({"question": q, "answer": a})
-    return pd.DataFrame(data)
 
-# ⚠️ Set your MedQuAD path properly before deployment
-df_medquad = load_medquad_all("data/MedQuAD")  # Use relative path for Render/Heroku
 
-# 🧠 Named Entity Recognition (Nouns only)
-def named_entity_recognition(text):
-    tokens = word_tokenize(text)
-    tags = pos_tag(tokens)
-    return [word for word, tag in tags if tag.startswith('NN')]
 
-# 🔍 Answer Retrieval using TF-IDF + Cosine Similarity
-def retrieve_answer(user_q, questions, answers, threshold=0.2):
-    vectorizer = TfidfVectorizer().fit([user_q] + questions)
-    vectors = vectorizer.transform([user_q] + questions)
-    cosine_sim = cosine_similarity(vectors[0:1], vectors[1:]).flatten()
-    max_idx = cosine_sim.argmax()
-    max_sim = cosine_sim[max_idx]
-    return (answers[max_idx], max_sim) if max_sim > threshold else ("No relevant answer found.", max_sim)
 
-# 💡 Medical Term Simplifier
-def explain_medical_term(term):
-    prompt = f"Explain {term} in simple terms for a patient. Avoid complex medical jargon. Keep it clear and short."
+def extract_keywords(text):
+    words = re.findall(r'\b[a-zA-Z]{4,}\b', text.lower())
+    stopwords = {
+        "what", "does", "mean", "the", "your", "with", "from", "that", "which",
+        "have", "how", "and", "when", "then", "than", "into", "this", "about", "like"
+    }
+    keywords = [word for word in words if word not in stopwords]
+    return list(set(keywords))
+
+# Generate answer using Gemini
+def generate_answer_with_gemini(question):
     try:
-        result = simplifier(prompt, max_length=64, min_length=20, do_sample=False)
-        return result[0]['generated_text']
+        response = gemini_model.generate_content(question)
+        return response.text.strip()
     except Exception as e:
-        return "No explanation available due to model error."
+        print(f"Gemini API error: {e}")
+        return "Sorry, I'm unable to answer that right now."
+
+# Explain each medical term using Gemini
+def explain_medical_term(term):
+    try:
+        prompt = f"Explain the medical term '{term}' in simple and accurate language for a layperson."
+        response = gemini_model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"Error explaining term {term}: {e}")
+        return "No explanation available."
 
 # 📁 Routes
 
@@ -219,13 +208,22 @@ def breast_cancer():
 
 @auth.route('/medical_qna', methods=['GET', 'POST'])
 def medical_qna():
-    answer, similarity, explanations = None, None, {}
+    answer = None
+    explanations = {}
+    similarity = None  # Optional: in case you plan to add similarity score later
+
     if request.method == 'POST':
         user_input = request.form['question']
-        entities = named_entity_recognition(user_input)
-        answer, similarity = retrieve_answer(user_input, df_medquad['question'].tolist(), df_medquad['answer'].tolist())
-        explanations = {ent: explain_medical_term(ent) for ent in entities}
-    return render_template('medical_qna.html', answer=answer, similarity=similarity, explanations=explanations)
+        keywords = extract_keywords(user_input)
+        answer = generate_answer_with_gemini(user_input)
+        explanations = {word: explain_medical_term(word) for word in keywords}
+
+    return render_template(
+        'medical_qna.html',
+        answer=answer,
+        similarity=similarity,
+        explanations=explanations
+    )
 
 @auth.route('/nearby')
 def nearby():
