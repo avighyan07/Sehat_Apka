@@ -21,3 +21,9 @@ transformers==4.40.0
 werkzeug==3.0.3
 wordcloud==1.9.3
 wtforms==3.1.2
+
+# 🧠 Google Generative AI (Gemini) support
+google-generativeai==0.4.1  # ✅ Required for Gemini API
+
+# 🌐 For HTTPS requests (Gemini or future integrations)
+requests==2.31.0
